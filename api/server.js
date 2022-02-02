@@ -16,6 +16,6 @@ server.use(express.json());
 
 server.use('/api/auth', authRouter);
 server.use('/api/users', userRouter)
-server.use('/api/classes', classRouter); // only logged-in users should have access!
+server.use('/api/classes',  classRouter); // only logged-in users should have access!
 server.use(errHandler)
 module.exports = server;

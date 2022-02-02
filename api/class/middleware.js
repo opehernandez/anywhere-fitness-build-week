@@ -68,12 +68,29 @@ const checkClassExists = (req, res, next) => {
         })
 }
 
+const checkHasAuthority = (req, res, next) => {
+    const {code, admin} = req.body
+    if(!admin) {
+        const err = {status: 402, message: 'you do no have permission to take that action'}
+        next(err)
+    }
+    else {
+        if(code !== 909090) {
+            const err = {status: 402, message: 'invalid instructor code'}
+            next(err)
+        }
+        else {
+            next()
+        }
+    }
+}
+
 const errHandler = (err, req, res, next) => {
     res.status(err.status || 500).json({message: err.message})
 }
 
 const validateBody = (req, res, next) => {
-    const { name, type, start_time, duration, int_level, location, max_class_size, inst_id } = req.body
+    const { name, type, start_time, duration, int_level, location, max_class_size, inst_id } = req.body.payload
     if(!name || !type || !start_time || !duration || !int_level || ! location || !max_class_size || !inst_id) {
         const err = {status: 404, message: 'missing required info'}
         next(err)
@@ -89,5 +106,6 @@ module.exports = {
     checkNotEnrolled,
     checkClassNotFull,
     checkClassExists,
-    validateBody
+    validateBody,
+    checkHasAuthority
 }

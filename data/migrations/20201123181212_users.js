@@ -1,7 +1,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('instructors', inst => {
     inst.increments('inst_id')
-    inst.string('email', 255).notNullable()
+    inst.string('email', 255).notNullable().unique()
     inst.string('username', 255).notNullable()
     inst.string('password').notNullable()
   })

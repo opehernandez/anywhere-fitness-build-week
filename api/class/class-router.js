@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { errHandler, validateSearch, checkNotEnrolled, checkClassNotFull, checkClassExists, validateBody } = require('./middleware')
+const { errHandler, validateSearch, checkNotEnrolled, checkClassNotFull, checkClassExists, validateBody, checkHasAuthority } = require('./middleware')
 const Class = require('./model')
 
 router.get('/', (req, res, next) => {
@@ -39,8 +39,8 @@ router.post('/:id/enroll', checkNotEnrolled, checkClassNotFull, (req, res, next)
         })
 })
 
-router.post('/', validateBody, (req, res, next) => {
-    Class.create(req.body)
+router.post('/', checkHasAuthority, validateBody, (req, res, next) => {
+    Class.create(req.body.payload)
         .then(classes => {
             res.status(201).json(classes[0])
         })
@@ -49,7 +49,7 @@ router.post('/', validateBody, (req, res, next) => {
         })
 })
 
-router.delete('/:id', checkClassExists, (req, res, next) => {
+router.delete('/:id', checkHasAuthority, checkClassExists, (req, res, next) => {
     const { id } = req.params
     Class.remove(id)
         .then(classDeleted => {
@@ -60,9 +60,9 @@ router.delete('/:id', checkClassExists, (req, res, next) => {
         })
 })
 
-router.put('/:id', validateBody, checkClassExists, (req, res, next) => {
+router.put('/:id', checkHasAuthority, validateBody, checkClassExists, (req, res, next) => {
     const { id } = req.params
-    Class.update(id, req.body)
+    Class.update(id, req.body.payload)
         .then(classId => {
             res.json({message: `Class with id: ${classId} succesfully updated`})
         })

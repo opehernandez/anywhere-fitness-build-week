@@ -1,25 +1,46 @@
 const db = require('../../data/dbConfig')
 
-const getById = (id) => {
+const getUserById = (user_id) => {
     return db('users')
-        .where({ id })
+        .where({ user_id })
 }
 
-const getByUsername = (username) => {
+const getAdminById = (inst_id) => {
+    return db('instructors')
+        .where({ inst_id })
+}
+
+const getUserByUsername = (username) => {
     return db('users')
         .where({ username })
 }
 
-const insert = (user) => {
+const getAdminByUsername = (username) => {
+    return db('instructors')
+        .where({ username })
+}
+
+const insertUser = (user) => {
     return db('users')
         .insert(user)
             .then(ids => {
-                return getById(ids[0])
+                return getUserById(ids[0])
+            })
+}
+
+const insertAdmin = (inst) => {
+    return db('instructors')
+        .insert(inst)
+            .then(ids => {
+                return getAdminById(ids[0])
             })
 }
 
 module.exports = {
-    getById,
-    insert,
-    getByUsername
+    getUserById,
+    insertUser,
+    getUserByUsername,
+    insertAdmin,
+    getAdminByUsername,
+    getAdminById
 }
