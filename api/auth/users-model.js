@@ -9,7 +9,6 @@ const getAdminById = (inst_id) => {
     return db('instructors')
         .where({ inst_id })
 }
-//
 
 const getUserByUsername = (username) => {
     return db('users')
