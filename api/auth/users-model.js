@@ -5,15 +5,15 @@ const getUserById = (user_id) => {
         .where({ user_id })
 }
 
-const getAdminById = (inst_id) => {
-    return db('instructors')
-        .where({ inst_id })
-}
+// const getAdminById = (inst_id) => {
+//     return db('instructors')
+//         .where({ inst_id })
+// }
 
-const getUserByUsername = (username) => {
-    return db('users')
-        .where({ username })
-}
+// const getUserByUsername = (username) => {
+//     return db('users')
+//         .where({ username })
+// }
 
 const getAdminByUsername = (username) => {
     return db('instructors')
