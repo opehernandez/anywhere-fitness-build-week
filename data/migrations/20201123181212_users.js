@@ -10,7 +10,7 @@ exports.up = function (knex) {
     classes.string('name').notNullable()
     classes.string('type').notNullable()
     classes.date('start_time').notNullable()
-    classes.int('duration').notNullable()
+    classes.integer('duration').notNullable()
     classes.string('int_level').notNullable()
     classes.string('location').notNullable()
     classes.integer('users_registered').defaultTo(0)
