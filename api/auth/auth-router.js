@@ -49,19 +49,35 @@ router.post('/register', checkIfAdmin, CheckPayload, checkUserFree, (req, res, n
   }  
 });
 
-router.post('/login', CheckPayload, (req, res, next) => {
+router.post('/login', checkIfAdmin, CheckPayload, (req, res, next) => {
   const {username, password} = req.body
-
-    User.getUserByUsername(username)
+    if(req.admin === true) {
+      User.getAdminByUsername(username)
       .then(([user]) => {
         if (user && bcrypt.compareSync(password, user.password)) {
           const token = createToken(user)
           res.status(200).json({ message: `Welcome back ${user.username}...`, token })
         } else {
+          console.log(user)
           next({ status: 401, message: 'Invalid Credentials' })
         }
       })
       .catch(next)
+    }
+    else {
+      User.getUserByUsername(username)
+      .then(([user]) => {
+        if (user && bcrypt.compareSync(password, user.password)) {
+          const token = createToken(user)
+          res.status(200).json({ message: `Welcome back ${user.username}...`, token })
+        } else {
+          console.log(user)
+          next({ status: 401, message: 'Invalid Credentials' })
+        }
+      })
+      .catch(next)
+    }
+    
 });
 
 router.use(errHandler)
